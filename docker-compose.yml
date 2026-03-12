@@ -1,0 +1,138 @@
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.6.1
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+  kafka:
+    image: confluentinc/cp-kafka:7.6.1
+    depends_on: [zookeeper]
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  user-db:
+    image: postgres:16
+    environment: { POSTGRES_DB: userdb, POSTGRES_USER: postgres, POSTGRES_PASSWORD: postgres }
+  vehicle-db:
+    image: postgres:16
+    environment: { POSTGRES_DB: vehicledb, POSTGRES_USER: postgres, POSTGRES_PASSWORD: postgres }
+  rental-db:
+    image: postgres:16
+    environment: { POSTGRES_DB: rentaldb, POSTGRES_USER: postgres, POSTGRES_PASSWORD: postgres }
+  listing-db:
+    image: postgres:16
+    environment: { POSTGRES_DB: listingdb, POSTGRES_USER: postgres, POSTGRES_PASSWORD: postgres }
+  pricing-db:
+    image: postgres:16
+    environment: { POSTGRES_DB: pricingdb, POSTGRES_USER: postgres, POSTGRES_PASSWORD: postgres }
+  payment-db:
+    image: postgres:16
+    environment: { POSTGRES_DB: paymentdb, POSTGRES_USER: postgres, POSTGRES_PASSWORD: postgres }
+  document-db:
+    image: postgres:16
+    environment: { POSTGRES_DB: documentdb, POSTGRES_USER: postgres, POSTGRES_PASSWORD: postgres }
+  signature-db:
+    image: postgres:16
+    environment: { POSTGRES_DB: signaturedb, POSTGRES_USER: postgres, POSTGRES_PASSWORD: postgres }
+  geo-db:
+    image: postgres:16
+    environment: { POSTGRES_DB: geodb, POSTGRES_USER: postgres, POSTGRES_PASSWORD: postgres }
+  notification-db:
+    image: postgres:16
+    environment: { POSTGRES_DB: notificationdb, POSTGRES_USER: postgres, POSTGRES_PASSWORD: postgres }
+
+  eureka-server:
+    build: { context: ./eureka-server }
+    ports: ["8761:8761"]
+  config-server:
+    build: { context: ./config-server }
+    ports: ["8888:8888"]
+
+  user-service:
+    build: { context: ./user-service }
+    depends_on: [user-db]
+    environment:
+      DB_URL: jdbc:postgresql://user-db:5432/userdb
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+    ports: ["8081:8081"]
+
+  vehicle-service:
+    build: { context: ./vehicle-service }
+    depends_on: [vehicle-db]
+    environment:
+      DB_URL: jdbc:postgresql://vehicle-db:5432/vehicledb
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+    ports: ["8082:8082"]
+
+  rental-service:
+    build: { context: ./rental-service }
+    depends_on: [rental-db, user-service, vehicle-service, kafka]
+    environment:
+      DB_URL: jdbc:postgresql://rental-db:5432/rentaldb
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      USER_SERVICE_URL: http://user-service:8081
+      VEHICLE_SERVICE_URL: http://vehicle-service:8082
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+    ports: ["8083:8083"]
+
+  listing-service:
+    build: { context: ./listing-service }
+    depends_on: [listing-db]
+    environment: { DB_URL: jdbc:postgresql://listing-db:5432/listingdb, DB_USERNAME: postgres, DB_PASSWORD: postgres }
+    ports: ["8084:8084"]
+
+  pricing-service:
+    build: { context: ./pricing-service }
+    depends_on: [pricing-db]
+    environment: { DB_URL: jdbc:postgresql://pricing-db:5432/pricingdb, DB_USERNAME: postgres, DB_PASSWORD: postgres }
+    ports: ["8085:8085"]
+
+  payment-service:
+    build: { context: ./payment-service }
+    depends_on: [payment-db]
+    environment: { DB_URL: jdbc:postgresql://payment-db:5432/paymentdb, DB_USERNAME: postgres, DB_PASSWORD: postgres }
+    ports: ["8086:8086"]
+
+  document-service:
+    build: { context: ./document-service }
+    depends_on: [document-db]
+    environment: { DB_URL: jdbc:postgresql://document-db:5432/documentdb, DB_USERNAME: postgres, DB_PASSWORD: postgres }
+    ports: ["8087:8087"]
+
+  signature-service:
+    build: { context: ./signature-service }
+    depends_on: [signature-db]
+    environment: { DB_URL: jdbc:postgresql://signature-db:5432/signaturedb, DB_USERNAME: postgres, DB_PASSWORD: postgres }
+    ports: ["8088:8088"]
+
+  geotracking-service:
+    build: { context: ./geotracking-service }
+    depends_on: [geo-db]
+    environment: { DB_URL: jdbc:postgresql://geo-db:5432/geodb, DB_USERNAME: postgres, DB_PASSWORD: postgres }
+    ports: ["8089:8089"]
+
+  notification-service:
+    build: { context: ./notification-service }
+    depends_on: [notification-db]
+    environment: { DB_URL: jdbc:postgresql://notification-db:5432/notificationdb, DB_USERNAME: postgres, DB_PASSWORD: postgres }
+    ports: ["8090:8090"]
+
+  api-gateway:
+    build: { context: ./api-gateway }
+    depends_on: [user-service, vehicle-service, rental-service]
+    ports: ["8080:8080"]
+
+  prometheus:
+    image: prom/prometheus:v2.53.0
+    volumes:
+      - ./observability/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports: ["9090:9090"]
+
+  grafana:
+    image: grafana/grafana:11.1.0
+    ports: ["3000:3000"]

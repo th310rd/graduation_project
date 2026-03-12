@@ -1,0 +1,21 @@
+server:
+  port: 8090
+
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/notificationdb}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+  application:
+    name: notification-service
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus

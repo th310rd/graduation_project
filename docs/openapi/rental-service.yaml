@@ -1,0 +1,17 @@
+openapi: 3.0.3
+info:
+  title: Rental Service API
+  version: 1.0.0
+paths:
+  /rentals:
+    post:
+      summary: Create rental
+  /rentals/{id}/confirm:
+    put:
+      summary: Confirm rental
+  /rentals/{id}/activate:
+    put:
+      summary: Activate rental
+  /rentals/{id}/complete:
+    put:
+      summary: Complete rental
