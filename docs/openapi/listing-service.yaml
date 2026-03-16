@@ -1,0 +1,27 @@
+openapi: 3.0.3
+info:
+  title: Listing Service API
+  version: 1.0.0
+paths:
+  /listings:
+    post:
+      summary: Create listing
+  /listings/{id}:
+    get:
+      summary: Get listing
+    put:
+      summary: Update listing
+    delete:
+      summary: Delete listing
+  /listings/search:
+    get:
+      summary: Search listings
+  /listings/{listingId}/photos:
+    post:
+      summary: Add listing photo
+  /listings/{listingId}/rules:
+    put:
+      summary: Update listing rules
+  /listings/{listingId}/availability:
+    get:
+      summary: Listing availability for rental checks

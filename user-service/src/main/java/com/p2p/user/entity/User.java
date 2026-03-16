@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -29,6 +30,15 @@ public class User {
     @Column(nullable = false)
     private LocalDate dateOfBirth;
 
+    @Column(nullable = false)
+    private String passwordHash;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private Set<UserRole> roles;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UserStatus status;
@@ -42,6 +52,8 @@ public class User {
     void prePersist() {
         if (id == null) id = UUID.randomUUID();
         if (status == null) status = UserStatus.ACTIVE;
+        if (roles == null || roles.isEmpty()) roles = Set.of(UserRole.ROLE_RENTER);
+
         createdAt = Instant.now();
         updatedAt = createdAt;
     }

@@ -2,6 +2,8 @@ server:
   port: 8083
 
 spring:
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/rentaldb}
     username: ${DB_USERNAME:postgres}
@@ -17,3 +19,9 @@ clients:
     base-url: ${USER_SERVICE_URL:http://localhost:8081}
   vehicle-service:
     base-url: ${VEHICLE_SERVICE_URL:http://localhost:8082}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+

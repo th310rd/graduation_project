@@ -1,0 +1,6 @@
+global:
+  scrape_interval: 15s
+scrape_configs:
+  - job_name: 'services'
+    static_configs:
+      - targets: ['user-service:8081','vehicle-service:8082','rental-service:8083','listing-service:8084','pricing-service:8085','payment-service:8086','document-service:8087','signature-service:8088','geotracking-service:8089','notification-service:8090']

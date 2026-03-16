@@ -1,0 +1,14 @@
+openapi: 3.0.3
+info:
+  title: User Service API
+  version: 1.0.0
+paths:
+  /auth/register:
+    post:
+      summary: Register user
+  /auth/login:
+    post:
+      summary: Login user
+  /users/{id}/eligibility:
+    get:
+      summary: Check eligibility

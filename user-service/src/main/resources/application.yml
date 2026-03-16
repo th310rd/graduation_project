@@ -14,3 +14,14 @@ spring:
         format_sql: true
   flyway:
     enabled: true
+security:
+  jwt:
+    secret: ${JWT_SECRET:VGhpc0lzQVN0cm9uZ0RldmVsb3BtZW50S2V5VGhpc0lzQVN0cm9uZ0RldmVsb3BtZW50S2V5}
+    expiration-seconds: ${JWT_EXPIRATION_SECONDS:3600}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+

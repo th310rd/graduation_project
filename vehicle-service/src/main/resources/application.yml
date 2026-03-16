@@ -11,3 +11,9 @@ spring:
       ddl-auto: validate
   flyway:
     enabled: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+
