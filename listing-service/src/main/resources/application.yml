@@ -13,6 +13,16 @@ spring:
     enabled: true
   application:
     name: listing-service
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+
+clients:
+  vehicle-service:
+    base-url: ${VEHICLE_SERVICE_URL:http://localhost:8082}
+
+security:
+  jwt:
+    secret: ${JWT_SECRET:VGhpc0lzQVN0cm9uZ0RldmVsb3BtZW50S2V5VGhpc0lzQVN0cm9uZ0RldmVsb3BtZW50S2V5}
 
 management:
   endpoints:

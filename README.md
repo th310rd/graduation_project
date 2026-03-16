@@ -44,6 +44,25 @@ This repository contains a microservice backend platform for a peer-to-peer car 
 9. Activate rental, ingest telemetry, complete rental.
 10. Trigger notifications and owner payout (payment extension point).
 
+
+## Listing Service (Fully Implemented)
+
+`listing-service` now provides complete marketplace listing management integrated with `vehicle-service` and JWT owner validation:
+
+- `POST /listings`
+- `GET /listings/{id}`
+- `PUT /listings/{id}`
+- `DELETE /listings/{id}`
+- `GET /listings/search`
+- `POST /listings/{listingId}/photos`
+- `PUT /listings/{listingId}/rules`
+- `GET /listings/{listingId}/availability`
+
+Validation and integration behavior:
+- Verifies vehicle existence through `vehicle-service` (`GET /vehicles/{id}`).
+- Extracts actor userId from JWT Bearer token and enforces vehicle/listing ownership for write operations.
+- Publishes Kafka events: `listing.created`, `listing.updated`, `listing.deleted`.
+
 ## Key APIs (examples)
 
 ### User Service

@@ -83,7 +83,13 @@ services:
   listing-service:
     build: { context: ./listing-service }
     depends_on: [listing-db]
-    environment: { DB_URL: jdbc:postgresql://listing-db:5432/listingdb, DB_USERNAME: postgres, DB_PASSWORD: postgres }
+    environment:
+      DB_URL: jdbc:postgresql://listing-db:5432/listingdb
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      VEHICLE_SERVICE_URL: http://vehicle-service:8082
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      JWT_SECRET: VGhpc0lzQVN0cm9uZ0RldmVsb3BtZW50S2V5VGhpc0lzQVN0cm9uZ0RldmVsb3BtZW50S2V5
     ports: ["8084:8084"]
 
   pricing-service:
