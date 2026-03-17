@@ -1,6 +1,6 @@
 # Frontend Demo UI (React + TypeScript + Vite)
 
-This frontend demonstrates the main presentation workflow for the P2P car rental platform:
+This frontend demonstrates the implemented workflow for the currently supported backend services:
 
 1. Register
 2. Login
@@ -29,18 +29,13 @@ npm run dev
 ```
 
 App default URL:
-
 - http://localhost:5173
 
-Backend gateway base URL is configurable with:
+## Backend URLs
 
-- `VITE_API_URL` (default `http://localhost:8080`)
+Set service URLs in `.env`:
 
-## API path conventions
-
-Frontend calls gateway service prefixes:
-
-- `/user-service`
-- `/vehicle-service`
-- `/listing-service`
-- `/rental-service`
+- `VITE_USER_API_URL` (default `http://localhost:8081`)
+- `VITE_VEHICLE_API_URL` (default `http://localhost:8082`)
+- `VITE_LISTING_API_URL` (default `http://localhost:8084`)
+- `VITE_RENTAL_API_URL` (default `http://localhost:8083`)

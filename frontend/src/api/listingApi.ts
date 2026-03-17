@@ -1,15 +1,15 @@
-import { api } from './client';
+import { listingApi } from './client';
 import type { Listing, ListingRules, ListingSummary } from '../types/listing';
 
 export async function searchListings(city?: string) {
-  const { data } = await api.get('/listing-service/listings/search', {
+  const { data } = await listingApi.get('/listings/search', {
     params: city ? { city } : undefined,
   });
   return data as ListingSummary[];
 }
 
 export async function getListing(id: string) {
-  const { data } = await api.get(`/listing-service/listings/${id}`);
+  const { data } = await listingApi.get(`/listings/${id}`);
   return data as Listing;
 }
 
@@ -23,16 +23,16 @@ export async function createListing(payload: {
   instantBooking: boolean;
   deliveryAvailable: boolean;
 }) {
-  const { data } = await api.post('/listing-service/listings', payload);
+  const { data } = await listingApi.post('/listings', payload);
   return data as Listing;
 }
 
 export async function addListingPhoto(listingId: string, payload: { photoUrl: string; sortOrder: number }) {
-  const { data } = await api.post(`/listing-service/listings/${listingId}/photos`, payload);
+  const { data } = await listingApi.post(`/listings/${listingId}/photos`, payload);
   return data;
 }
 
 export async function updateListingRules(listingId: string, payload: ListingRules) {
-  const { data } = await api.put(`/listing-service/listings/${listingId}/rules`, payload);
+  const { data } = await listingApi.put(`/listings/${listingId}/rules`, payload);
   return data;
 }

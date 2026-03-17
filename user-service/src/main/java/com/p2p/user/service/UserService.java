@@ -10,7 +10,6 @@ import com.p2p.user.repository.DriverLicenseRepository;
 import com.p2p.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -26,7 +25,6 @@ public class UserService {
     private final DriverLicenseRepository driverLicenseRepository;
     private final PasswordEncoder passwordEncoder;
 
-
     public UserResponse register(CreateUserRequest request) {
         User user = User.builder()
                 .firstName(request.firstName())
@@ -37,7 +35,6 @@ public class UserService {
                 .passwordHash(passwordEncoder.encode("changeme"))
                 .status(request.status() == null ? UserStatus.ACTIVE : request.status())
                 .roles(java.util.Set.of(com.p2p.user.entity.UserRole.ROLE_RENTER))
-                .status(request.status() == null ? UserStatus.ACTIVE : request.status())
                 .build();
         return map(userRepository.save(user));
     }

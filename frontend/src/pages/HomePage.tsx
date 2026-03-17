@@ -24,7 +24,7 @@ export default function HomePage() {
     status: 'AVAILABLE' as const,
   });
 
-  const { data, isLoading, refetch } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['listings', city],
     queryFn: () => searchListings(city || undefined),
   });
@@ -38,7 +38,7 @@ export default function HomePage() {
   return (
     <div className="max-w-6xl mx-auto p-4">
       <h1 className="text-2xl font-semibold mb-4">Marketplace Listings</h1>
-      <SearchBar onSearch={(nextCity) => { setCity(nextCity); refetch(); }} />
+      <SearchBar onSearch={(nextCity) => setCity(nextCity)} />
 
       <div className="grid lg:grid-cols-2 gap-6 mb-8">
         <div className="bg-white border rounded-xl p-4">

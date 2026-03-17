@@ -2,10 +2,7 @@ import { useMemo } from 'react';
 
 export function useAuth() {
   const token = localStorage.getItem('token');
-  const user = useMemo(() => {
-    const raw = localStorage.getItem('user');
-    return raw ? JSON.parse(raw) : null;
-  }, [token]);
+  const userId = useMemo(() => localStorage.getItem('userId'), [token]);
 
   const logout = () => {
     localStorage.removeItem('token');
@@ -13,5 +10,5 @@ export function useAuth() {
     localStorage.removeItem('userId');
   };
 
-  return { isAuthenticated: !!token, token, user, logout };
+  return { isAuthenticated: !!token, token, userId, logout };
 }

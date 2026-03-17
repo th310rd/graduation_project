@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -60,8 +59,6 @@ public class RentalService {
         Rental saved = rentalRepository.save(rental);
         eventPublisher.publish(com.p2p.rental.config.KafkaTopics.RENTAL_CREATED, saved.getId().toString(), Map.of("rentalId", saved.getId().toString(), "status", saved.getStatus().name(), "occurredAt", Instant.now().toString()));
         return map(saved);
-
-        return map(rentalRepository.save(rental));
     }
 
     @Transactional
@@ -75,8 +72,6 @@ public class RentalService {
         Rental saved = rentalRepository.save(rental);
         eventPublisher.publish(com.p2p.rental.config.KafkaTopics.RENTAL_CONFIRMED, saved.getId().toString(), Map.of("rentalId", saved.getId().toString(), "status", saved.getStatus().name(), "occurredAt", Instant.now().toString()));
         return map(saved);
-
-        return map(rentalRepository.save(rental));
     }
 
     @Transactional
@@ -90,8 +85,6 @@ public class RentalService {
         Rental saved = rentalRepository.save(rental);
         eventPublisher.publish(com.p2p.rental.config.KafkaTopics.RENTAL_ACTIVE, saved.getId().toString(), Map.of("rentalId", saved.getId().toString(), "status", saved.getStatus().name(), "occurredAt", Instant.now().toString()));
         return map(saved);
-
-        return map(rentalRepository.save(rental));
     }
 
     @Transactional
@@ -108,7 +101,6 @@ public class RentalService {
         Rental saved = rentalRepository.save(rental);
         vehicleServiceClient.unlock(saved.getVehicleId(), saved.getId());
         eventPublisher.publish(com.p2p.rental.config.KafkaTopics.RENTAL_COMPLETED, saved.getId().toString(), Map.of("rentalId", saved.getId().toString(), "status", saved.getStatus().name(), "occurredAt", Instant.now().toString()));
-
         return map(saved);
     }
 

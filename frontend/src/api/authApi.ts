@@ -1,4 +1,4 @@
-import { api } from './client';
+import { userApi } from './client';
 
 export type LoginRequest = { email: string; password: string };
 export type RegisterRequest = {
@@ -12,11 +12,11 @@ export type RegisterRequest = {
 };
 
 export async function login(payload: LoginRequest) {
-  const { data } = await api.post('/user-service/auth/login', payload);
+  const { data } = await userApi.post('/auth/login', payload);
   return data as { accessToken: string };
 }
 
 export async function register(payload: RegisterRequest) {
-  const { data } = await api.post('/user-service/auth/register', payload);
+  const { data } = await userApi.post('/auth/register', payload);
   return data;
 }
