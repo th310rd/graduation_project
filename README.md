@@ -1,12 +1,12 @@
-# P2P Car Sharing Platform (Implemented Services Only)
+# Online Car Rental System (Implemented Services Only)
 
 This repository currently contains the **implemented and runnable** core services:
 
-- `user-service` (port `8081`)
-- `vehicle-service` (port `8082`)
-- `rental-service` (port `8083`)
-- `listing-service` (port `8084`)
-- `frontend` (Vite React app)
+- `user-service`
+- `vehicle-service`
+- `rental-service`
+- `listing-service` 
+- `frontend part`
 
 Non-implemented/placeholder services are excluded from Maven modules and Docker Compose runtime.
 
@@ -53,11 +53,3 @@ cp .env.example .env
 npm install
 npm run dev
 ```
-
-Default frontend URL: `http://localhost:5173`
-
-## Notes
-
-- `listing-service` validates vehicle existence and ownership through `vehicle-service`.
-- `listing-service` and `rental-service` publish Kafka events.
-- Frontend uses direct service URLs from `.env`.
